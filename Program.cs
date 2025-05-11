@@ -22,7 +22,7 @@ static class TankGame
 
     static void LoadTextures()
     {
-        map = new Map(1);
+        map = new Map();
     }
 
     static void GameLoop()

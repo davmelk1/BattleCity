@@ -23,8 +23,17 @@ public class Map
     private int level;
     private GameOver? gameOver;
     private Win? win;
-    public Map(int level)
+
+    public Map()
     {
+        level = 1;
+        init();
+    }
+    private void init()
+    {
+        currentEnemyCount = 0;
+        if (!Constants.levelToEnemyCount.ContainsKey(level))
+            throw new WinException("NoEnemyCount");
         enemyCount = Constants.levelToEnemyCount[level];
         mapTexture = new Texture(Constants.backgroundImage);
         mapSprite = new Sprite(mapTexture)
@@ -51,7 +60,7 @@ public class Map
         hero = new Hero();
         border = new Border();
         flag = new Flag();
-        loadMapFromFile();
+        loadMapFromFile(level);
     }
 
     private void loadMapFromFile(int level2load = 1)
@@ -84,26 +93,6 @@ public class Map
                 }
             }
         }
-    }
-    
-    private void createBricks()
-    {
-        brickCount = Constants.levelToBrickCount[1];
-        bricks = new Brick[brickCount];
-        bricks[0] = new Brick(Constants.flagInitPosition.X - Constants.brickSize, Constants.flagInitPosition.Y - Constants.brickSize);
-        bricks[1] = new Brick(Constants.flagInitPosition.X - Constants.brickSize, Constants.flagInitPosition.Y);
-        bricks[2] = new Brick(Constants.flagInitPosition.X - Constants.brickSize, Constants.flagInitPosition.Y + Constants.brickSize);
-        bricks[3] = new Brick(Constants.flagInitPosition.X, Constants.flagInitPosition.Y - Constants.brickSize);
-        bricks[4] = new Brick(Constants.flagInitPosition.X + Constants.brickSize, Constants.flagInitPosition.Y - Constants.brickSize);
-        bricks[5] = new Brick(Constants.flagInitPosition.X + 2 * Constants.brickSize, Constants.flagInitPosition.Y - Constants.brickSize);
-        bricks[6] = new Brick(Constants.flagInitPosition.X + 2 * Constants.brickSize, Constants.flagInitPosition.Y);
-        bricks[7] = new Brick(Constants.flagInitPosition.X + 2 * Constants.brickSize, Constants.flagInitPosition.Y + Constants.brickSize);
-        bricks[11] = new Brick(180, 200);
-    }
-
-    public void LocalReset()
-    {
-        
     }
 
     public void Display(RenderWindow window)
@@ -144,9 +133,8 @@ public class Map
         {
             try
             {
-                win = new Win();
-                
-                loadMapFromFile(level++);
+                ++level;
+                init();
             }
             catch (WinException){
                 win = new Win();

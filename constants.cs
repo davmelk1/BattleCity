@@ -46,19 +46,7 @@ public static class Constants
         {2, 6},
         {3, 8},
     };
-    public static Dictionary<int, int> levelToBrickCount =  new(){
-        {1, 100},
-        {2, 6},
-        {3, 8},
-    };
-    public static Dictionary<int, Dictionary<int, int>> levelBricks =  new(){
-        {1, new(){
-            {1, 3},
-            {2, 6},
-            {3, 8}
-            }
-        }
-    };
+
     public static Texture texture = new(heroImage);
     public static uint maxBulletCount = 10;
     public const int tankSpeed = 10;
