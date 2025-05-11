@@ -140,8 +140,18 @@ public class Map
             win = null;
         }
         gameOver?.Update();
-        if (checkWin()) 
-            win = new Win();
+        if (checkWin())
+        {
+            try
+            {
+                win = new Win();
+                
+                loadMapFromFile(level++);
+            }
+            catch (WinException){
+                win = new Win();
+            }
+        }
         win?.Update();
             
     }
