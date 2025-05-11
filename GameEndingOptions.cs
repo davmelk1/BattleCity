@@ -59,7 +59,7 @@ public class Win
     {
         win.Position += new Vector2f(0, -5);
         if (win.Position.Y < Constants.gameY1 + Constants.gameHeight / 2f)
-            throw new GameOverException("WIN");
+            throw new WinException("WIN");
     }   
     
     public void Display(RenderWindow window)
