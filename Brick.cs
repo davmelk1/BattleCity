@@ -27,7 +27,15 @@ public class Brick
             return false;
         bool hit = false;
         for (int k = 0; k < 4; k++)
+        {
             if (isTouching(bullet))
+            {
+                bullet.hit = true;
+                break;
+            }
+        }
+        for (int k = 0; k < 4; k++)
+            if (subBricks[k] != null && Utilities.interacts(bullet, subBricks[k]))
             {
                 hit = true;
                 subBricks[k] = null;

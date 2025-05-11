@@ -51,12 +51,12 @@ public abstract class Tank : IHavingBounds
         
         for (int j = 0; j < Constants.maxBulletCount; j++)
         {
-            // for (int i = 0; i < bricks.Length; i++)
-            //     if (bricks[i] != null && bricks[i].isTouching(bullets[j]))
-            //     {
-            //         bullets[j].hit = true;
-            //         break;
-            //     }
+            for (int i = 0; i < bricks.Length; i++)
+                if (bricks[i] != null && bricks[i].isTouching(bullets[j]))
+                {
+                    bullets[j].hit = true;
+                    break;
+                }
             bool bulletDestroyed = false;
             for (int i = 0; i < bricks.Length; i++)
             {

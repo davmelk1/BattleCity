@@ -62,7 +62,7 @@ public static class Constants
     public static Texture texture = new(heroImage);
     public static uint maxBulletCount = 10;
     public const int tankSpeed = 10;
-    public const float bulletSpeed = 2f;
+    public const float bulletSpeed = 12.5f;
     public const float tankSize = 50;
     public const float enemyLeftSize = 25;
     public const float bulletSize = 15;

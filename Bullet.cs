@@ -42,7 +42,7 @@ public class Bullet : IHavingBounds
         if (!hit)
             return bulletSprite.GetGlobalBounds();
         
-        float margin = 10;
+        float margin = 12;
         FloatRect bounds = bulletSprite.GetGlobalBounds();
         if (direction is Direction.Left or Direction.Right)
         {
