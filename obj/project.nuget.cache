@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "v5rYlNceo0U=",
+  "success": true,
+  "projectFilePath": "/home/davit/C#/kursach/MyGame/MyGame.csproj",
+  "expectedPackageFiles": [
+    "/home/davit/.nuget/packages/csfml/2.5.2/csfml.2.5.2.nupkg.sha512",
+    "/home/davit/.nuget/packages/sfml.audio/2.5.1/sfml.audio.2.5.1.nupkg.sha512",
+    "/home/davit/.nuget/packages/sfml.graphics/2.5.1/sfml.graphics.2.5.1.nupkg.sha512",
+    "/home/davit/.nuget/packages/sfml.net/2.5.1/sfml.net.2.5.1.nupkg.sha512",
+    "/home/davit/.nuget/packages/sfml.system/2.5.1/sfml.system.2.5.1.nupkg.sha512",
+    "/home/davit/.nuget/packages/sfml.window/2.5.1/sfml.window.2.5.1.nupkg.sha512"
+  ],
+  "logs": []
+}
