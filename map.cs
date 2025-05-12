@@ -18,8 +18,8 @@ public class Map
     private static int playerLives = 3;
     private static Flag flag;
     public static Border border;
-    private bool pending = false;
-    private bool allEnemiesCreated = false;
+    private bool pending;
+    private bool allEnemiesCreated;
     private int level;
     private GameOver? gameOver;
     private Win? win;
