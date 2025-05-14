@@ -5,7 +5,7 @@ using SFML.Window;
 
 public class Hero : Tank
 {
-    public bool IsMoving = false;
+    private bool isMoving;
     public Hero()
     {
         fireTimer = Constants.heroFireIntervalInFrames;
@@ -19,11 +19,11 @@ public class Hero : Tank
         tankSprite.Position = new Vector2f(Constants.heroInitPositionX, Constants.heroInitPositionY);
     }
 
-    private new void Move(Direction direction)
+    private new void Move(Direction moveDirection)
     {
-        IsMoving = true;
-        base.Move(direction);
-        FloatRect? borderIntersection = Utilities.interacts(Map.border, this);
+        isMoving = true;
+        base.Move(moveDirection);
+        var borderIntersection = Utilities.interacts(Map.border, this);
         if (borderIntersection != null)
             myClamp((FloatRect)borderIntersection);
     }
@@ -54,20 +54,15 @@ public class Hero : Tank
 
     public override void Update()
     {
-        IsMoving = false;
+        isMoving = false;
         if (Keyboard.IsKeyPressed(Keyboard.Key.Left))  MoveLeft();
         else if (Keyboard.IsKeyPressed(Keyboard.Key.Right)) MoveRight();
         else if (Keyboard.IsKeyPressed(Keyboard.Key.Up))    MoveUp();
         else if (Keyboard.IsKeyPressed(Keyboard.Key.Down))  MoveDown();
         // if (fireTimer++ > Constants.heroFireIntervalInFrames && Keyboard.IsKeyPressed(Keyboard.Key.Space))
-        if (bullets?.Count(x => x != null) < 2 && fireTimer++ > Constants.heroFireIntervalInFrames && Keyboard.IsKeyPressed(Keyboard.Key.Space))
-        {
-            fireTimer = 0;
+        if (bullets.Count(x => x != null) < 2 && fireTimer++ > Constants.heroFireIntervalInFrames && Keyboard.IsKeyPressed(Keyboard.Key.Space))
             Fire();
-        }
-
         updateBullets();
-        
     }
 
     public void handleBulletInteractions(Enemy?[] enemies)
@@ -78,15 +73,11 @@ public class Hero : Tank
                 continue;
             for (int j = 0; j < enemies.Length; j++)
             {
-                if (enemies[j] == null)
+                if (enemies[j] == null || !Utilities.interacts(bullets[i]!, enemies[j]!))
                     continue;
-                if (Utilities.interacts(bullets[i], enemies[j]))
-                {
-                    enemies[j] = null;
-                    bullets[i] = null;
-                    break;
-                }        
-                
+                enemies[j] = null;
+                bullets[i] = null;
+                break;
             }
         }
     }
@@ -94,20 +85,20 @@ public class Hero : Tank
     {
         if (other == null)
             return;
-        FloatRect thisBounds = getGlobalBounds();
-        FloatRect otherBounds = other.getGlobalBounds();
+        var thisBounds = getGlobalBounds();
+        var otherBounds = other.getGlobalBounds();
 
         if (!thisBounds.Intersects(otherBounds, out FloatRect intersection))
             return;
 
-        bool facingEachOther =
+        var facingEachOther =
             (direction == Direction.Right && other.Direction == Direction.Left) ||
             (direction == Direction.Left && other.Direction == Direction.Right) ||
             (direction == Direction.Up && other.Direction == Direction.Down) ||
             (direction == Direction.Down && other.Direction == Direction.Up);
 
-        bool thisHitFromSide = false;
-        bool otherHitFromSide = false;
+        var thisHitFromSide = false;
+        var otherHitFromSide = false;
 
         if (intersection.Width < intersection.Height)
         {
@@ -132,28 +123,21 @@ public class Hero : Tank
 
         if (facingEachOther)
         {
-            FloatRect halfIntersection = new FloatRect(
+            var halfIntersection = new FloatRect(
                 intersection.Left, intersection.Top,
                 intersection.Width / 2f, intersection.Height / 2f
             );
-            if (IsMoving)
+            if (isMoving)
             {
                 myClamp(halfIntersection);
                 other.myClamp(halfIntersection);  
             }
             else
-            {
-                other.myClamp(intersection);  
-            }
+                other.myClamp(intersection);
         }
         else if (thisHitFromSide)
-        {
             myClamp(intersection);
-        }
-        else if (otherHitFromSide)
-        {
+        else if (otherHitFromSide) 
             other.myClamp(intersection);
-        }
     }
-
 }

@@ -3,22 +3,17 @@ using SFML.System;
 
 namespace MyGame;
 
-public class Bullet : IHavingBounds
+public class Bullet(float x, float y, Direction direction) : IHavingBounds
 {
-    private Sprite bulletSprite;
-    private Direction direction;
-    public bool hit = false;
-
-    public Bullet(float x, float y, Direction direction)
+    private readonly Sprite bulletSprite = new(Constants.texture)
     {
-        this.direction = direction;
-        bulletSprite = new Sprite(Constants.texture)
-            {
-                TextureRect = Constants.bulletDirection2Rect[direction]
-                ,Scale = Constants.bulletScale,
-                Position = new Vector2f(x + Constants.tankSize/2 - Constants.bulletSize / 2, y + Constants.tankSize/2 - Constants.bulletSize / 2)
-            };
-    }
+        TextureRect = Constants.bulletDirection2Rect[direction]
+        ,Scale = Constants.bulletScale,
+        Position = new Vector2f(x + Constants.tankSize/2 - Constants.bulletSize / 2, y + Constants.tankSize/2 - Constants.bulletSize / 2)
+    };
+
+    public bool Hit;
+    
 
     public void Display(RenderWindow window)
     {
@@ -39,7 +34,7 @@ public class Bullet : IHavingBounds
 
     public FloatRect getGlobalBounds()
     {
-        if (!hit)
+        if (!Hit)
             return bulletSprite.GetGlobalBounds();
         
         float margin = 12;

@@ -5,8 +5,8 @@ namespace MyGame;
 
 public class GameOver
 {
-    private Sprite game;
-    private Sprite over;
+    private readonly Sprite game;
+    private readonly Sprite over;
 
     public GameOver()
     {
@@ -44,7 +44,7 @@ public class GameOver
 
 public class Win
 {
-    private Text win;
+    private readonly Text win;
 
     public Win()
     {

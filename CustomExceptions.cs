@@ -1,14 +1,4 @@
 namespace MyGame;
 
-class GameOverException : ApplicationException
-{
-    public GameOverException(string message) : base(message)
-    {
-    }
-}
-class WinException : ApplicationException
-{
-    public WinException(string message) : base(message)
-    {
-    }
-}
+public class GameOverException(string message) : ApplicationException(message);
+public class WinException(string message) : ApplicationException(message);

@@ -27,7 +27,7 @@ public static class Constants
     
     public static uint windowWidth = Convert.ToUInt32(gameWidth + borderLeft.X + borderRight.X);
     public static uint windowHeight = Convert.ToUInt32(gameHeight + borderUp.Y + borderDown.Y);
-    public static Color borderColor = new Color(128, 128, 128);
+    public static Color borderColor = new(128, 128, 128);
     
     private const int originalTankSize = 16;
     private const int originalBulletWidth = 3;
@@ -43,8 +43,9 @@ public static class Constants
     
     public static Dictionary<int, int> levelToEnemyCount =  new(){
         {1, 1},
-        {2, 6},
-        {3, 8},
+        {2, 2},
+        {3, 3},
+        {4, 3},
     };
 
     public static Texture texture = new(heroImage);
@@ -89,6 +90,7 @@ public static class Constants
     public static IntRect flagRect = new(originalTankSize * 19, originalTankSize * 2, originalTankSize, originalTankSize);
     public static IntRect flagDestroyedRect = new(originalTankSize * 20, originalTankSize * 2, originalTankSize, originalTankSize);
     public static IntRect brickTextureRect = new IntRect(288, 64, originalSmallBrickSize, originalSmallBrickSize);
+    public static IntRect brickTextureRect2 = new IntRect(292, 64, originalSmallBrickSize, originalSmallBrickSize);
     public static IntRect gameTextRect = new IntRect(288, 184, 32, 7);
     public static IntRect overTextRect = new IntRect(288, 192, 32, 7);
 

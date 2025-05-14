@@ -4,7 +4,7 @@ using SFML.System;
 
 public class Enemy : Tank
 {
-    static Random rand = new Random();
+    private static readonly Random Rand = new();
     public Enemy()
     {
         fireTimer = 0;
@@ -16,7 +16,7 @@ public class Enemy : Tank
             ;
         direction = Direction.Left;
         
-        tankSprite.Position = new Vector2f(Constants.enemyInitPositionX1 + rand.Next(2) * Constants.enemyInitPositionX2, 
+        tankSprite.Position = new Vector2f(Constants.enemyInitPositionX1 + Rand.Next(2) * Constants.enemyInitPositionX2, 
             Constants.enemyInitPositionY);
     }
 
@@ -46,8 +46,8 @@ public class Enemy : Tank
 
     public void randomChangeDirection()
     {
-        Array enumValues = Enum.GetValues(typeof(Direction));
-        direction = (Direction)enumValues.GetValue(rand.Next(enumValues.Length));
+        Array enumValues = Enum.GetValues<Direction>();
+        direction = (Direction)(enumValues.GetValue(Rand.Next(enumValues.Length)) ?? Direction.Down);
         tankSprite.Position = new Vector2f(Math.Clamp(tankSprite.Position.X, Constants.gameX1, Constants.gameX2 - Constants.tankSize), 
             Math.Clamp(tankSprite.Position.Y, Constants.gameY1, Constants.gameY2 - Constants.tankSize));
     }
@@ -63,11 +63,8 @@ public class Enemy : Tank
         {
            randomChangeDirection();
         }
-        if (fireTimer++ > Constants.enemyFireIntervalInFrames)
-        {
-            fireTimer = 0;
+        if (fireTimer++ > Constants.enemyFireIntervalInFrames) 
             Fire();
-        }
         updateBullets();
     }
 }

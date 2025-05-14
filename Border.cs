@@ -3,33 +3,39 @@ using SFML.Graphics;
 
 public class Border
 {
-    private RectangleShape topBorder, bottomBorder, leftBorder, rightBorder;
+    private readonly RectangleShape 
+        topBorder = new(Constants.borderUp)
+    {
+        Position = Constants.borderUpPosition, FillColor = Constants.borderColor
+    }, bottomBorder = new(Constants.borderDown)
+    {
+        Position = Constants.borderDownPosition, FillColor = Constants.borderColor
+    }, leftBorder = new(Constants.borderLeft)
+    {
+        Position = Constants.borderLeftPosition, FillColor = Constants.borderColor
+    }, rightBorder = new(Constants.borderRight)
+    {
+        Position = Constants.borderRightPosition, FillColor = Constants.borderColor
+    };
+
+    private readonly RectangleShape[] borders;
+
     public Border()
     {
-        topBorder = new RectangleShape(Constants.borderUp) { Position = Constants.borderUpPosition, FillColor = Constants.borderColor };
-        bottomBorder = new RectangleShape(Constants.borderDown) { Position = Constants.borderDownPosition, FillColor = Constants.borderColor };
-        leftBorder = new RectangleShape(Constants.borderLeft) { Position = Constants.borderLeftPosition, FillColor = Constants.borderColor };
-        rightBorder = new RectangleShape(Constants.borderRight) { Position = Constants.borderRightPosition, FillColor = Constants.borderColor };
+        borders = [topBorder, bottomBorder, leftBorder, rightBorder];
     }
 
     public void Display(RenderWindow window)
     {
-        window.Draw(topBorder);
-        window.Draw(bottomBorder);
-        window.Draw(leftBorder);
-        window.Draw(rightBorder);
+        foreach (var border in borders)
+            window.Draw(border);
     }
 
     public FloatRect? interacts(FloatRect bounds)
     {
-        if (bounds.Intersects(topBorder.GetGlobalBounds()))
-            return topBorder.GetGlobalBounds();
-        if (bounds.Intersects(bottomBorder.GetGlobalBounds()))
-            return bottomBorder.GetGlobalBounds();
-        if (bounds.Intersects(leftBorder.GetGlobalBounds()))
-            return leftBorder.GetGlobalBounds();
-        if (bounds.Intersects(rightBorder.GetGlobalBounds()))
-            return rightBorder.GetGlobalBounds();
+        foreach (var border in borders)
+            if (border.GetGlobalBounds().Intersects(bounds))
+                return border.GetGlobalBounds();
         return null;
     }
 }

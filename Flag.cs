@@ -1,22 +1,17 @@
 using SFML.Graphics;
-using SFML.System;
 
 namespace MyGame;
 
 public class Flag : IHavingBounds
 {
-    private Sprite flagSprite;
-    bool status = false;
-    public Flag()
+    private readonly Sprite flagSprite = new(Constants.texture)
     {
-        flagSprite = new Sprite(Constants.texture)
-        {
-            TextureRect = Constants.flagRect,
-            Scale = Constants.tankScale,
-            Position = Constants.flagInitPosition
-        };
-    }
-    
+        TextureRect = Constants.flagRect,
+        Scale = Constants.tankScale,
+        Position = Constants.flagInitPosition
+    };
+    private bool status;
+
     public void Display(RenderWindow window)
     {
         window.Draw(flagSprite);

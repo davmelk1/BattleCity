@@ -5,12 +5,11 @@ using SFML.Graphics;
 
 public class Map
 {
-    private static Texture mapTexture;
     private static Sprite mapSprite;
     private int enemyCount;
-    public static int currentEnemyCount;
+    private int currentEnemyCount;
     private int brickCount;
-    private Brick[]? bricks;
+    private Brick[] bricks;
     private static Hero hero;
     private static Enemy?[] enemies;
     private static Sprite?[] enemiesLeft;
@@ -31,12 +30,13 @@ public class Map
     }
     private void init()
     {
-        currentEnemyCount = 0;
         if (!Constants.levelToEnemyCount.ContainsKey(level))
             throw new WinException("NoEnemyCount");
+        currentEnemyCount = 0;
+        allEnemiesCreated = false;
         enemyCount = Constants.levelToEnemyCount[level];
-        mapTexture = new Texture(Constants.backgroundImage);
-        mapSprite = new Sprite(mapTexture)
+        new Texture(Constants.backgroundImage);
+        mapSprite = new Sprite(new Texture(Constants.backgroundImage))
         {
             Scale = new Vector2f(20, 20)
         };
@@ -48,9 +48,9 @@ public class Map
             enemiesLeft[i] = new Sprite(Constants.texture){
                 TextureRect = Constants.enemyLeftRect
                 ,Scale = Constants.enemyLeftScale
+                ,Position = new Vector2f(Constants.gameX2 + Constants.enemyLeftSize + Constants.enemyLeftSize * (i % 2), 
+                    Constants.borderUp.Y + Constants.enemyLeftSize * (int)(i / 2) )
             };
-            enemiesLeft[i].Position = new Vector2f(Constants.gameX2 + Constants.enemyLeftSize + (Constants.enemyLeftSize * (i % 2)), 
-                Constants.borderUp.Y + Constants.enemyLeftSize * (i / 2) );
         }
         playerLivesIcon = new Sprite(Constants.texture){
             TextureRect = Constants.playerLivesRect
@@ -63,36 +63,19 @@ public class Map
         loadMapFromFile(level);
     }
 
-    private void loadMapFromFile(int level2load = 1)
+    private void loadMapFromFile(int level2Load = 1)
     {
-        string[] lines = File.ReadAllLines(Constants.levelsPath + level2load);
+        var lines = File.ReadAllLines(Constants.levelsPath + level2Load);
+        var count = lines.Sum(line => line.Count(c => c == '#'));
 
-        int count = 0;
-        foreach (var line in lines)
-        {
-            foreach (char c in line)
-            {
-                if (c == '#') count++;
-            }
-        }
-
-        // Initialize the Sprite array
         bricks = new Brick[count];
         brickCount = count;
-        int index = 0;
+        var index = 0;
 
-        // Second pass: create and store sprites
         for (int i = 0; i < lines.Length; i++)
-        {
-            string line = lines[i];
-            for (int j = 0; j < line.Length; j++)
-            {
-                if (line[j] == '#')
-                {
+            for (int j = 0; j < lines[i].Length; j++)
+                if (lines[i][j] == '#') 
                     bricks[index++] = new Brick(50 + j * 25, 50 + i * 25);
-                }
-            }
-        }
     }
 
     public void Display(RenderWindow window)
@@ -113,8 +96,7 @@ public class Map
         window.Draw(text);
         flag.Display(window);
         for (int i = 0; i < brickCount; i++)
-            if (bricks[i] != null)
-                bricks[i].Display(window);
+            bricks?[i].Display(window);
         gameOver?.Display(window);
         win?.Display(window); 
     }
@@ -196,13 +178,13 @@ public class Map
     {
         if (enemies[i] == null)
             return;
-        bool heroDestroyed = enemies[i].handleBulletInteractions(bricks, hero);
+        var heroDestroyed = enemies[i]!.handleBulletInteractions(bricks, hero);
         if (!pending && heroDestroyed)
         {
             CreateDumpThenRealHero();
             playerLives--;
         }
-        enemies[i].handleBulletHitsFlag(flag);
+        enemies[i]?.handleBulletHitsFlag(flag);
     }
 
     private void CreateDumpThenRealHero()
@@ -229,5 +211,4 @@ public class Map
         hero = new Hero();
         pending = false;
     }
-    
 }

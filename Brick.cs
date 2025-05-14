@@ -5,20 +5,19 @@ namespace MyGame;
 
 public class Brick
 {
-    private SubBrick[]? subBricks;
+    private readonly SubBrick?[] subBricks;
 
     public Brick(float x, float y)
     {
         subBricks = new SubBrick[4];
         for (int k = 0; k < 4; k++)
-            subBricks[k] = new SubBrick(x + Constants.smallBrickSize * (k % 2), y + Constants.smallBrickSize * (k / 2), true);
+            subBricks[k] = new SubBrick(x + Constants.smallBrickSize * (k % 2), y + Constants.smallBrickSize * (int)(k / 2), k % 2 == 0);
     }
 
     public void Display(RenderWindow window)
     {
         for (int k = 0; k < 4; k++)
-            if (subBricks[k] != null)
-                subBricks[k].Display(window);
+            subBricks[k]?.Display(window);
     }
 
     public bool handleBullet(ref Bullet? bullet)
@@ -30,17 +29,23 @@ public class Brick
         {
             if (isTouching(bullet))
             {
-                bullet.hit = true;
+                bullet.Hit = true;
                 break;
             }
         }
         for (int k = 0; k < 4; k++)
-            if (subBricks[k] != null && Utilities.interacts(bullet, subBricks[k]))
+            if (subBricks[k] != null && Utilities.interacts(bullet, subBricks[k]!))
             {
                 hit = true;
                 subBricks[k] = null;
             }
         return hit;
+    }
+
+    public void destroy()
+    {
+        for (int k = 0; k < 4; k++)
+            subBricks[k] = null;
     }
 
     public bool isTouching(Bullet? bullet)
@@ -49,7 +54,7 @@ public class Brick
             return false;
         for (int k = 0; k < 4; k++)
         {
-            if (subBricks[k] != null && Utilities.interacts(bullet, subBricks[k]))
+            if (subBricks[k] != null && Utilities.interacts(bullet, subBricks[k]!))
                 return true;
         }
         return false;
@@ -59,9 +64,9 @@ public class Brick
     {
         for (int k = 0; k < 4; k++)
         {
-            if (subBricks[k] != null && Utilities.interacts(subBricks[k], tank))
+            if (subBricks[k] != null && Utilities.interacts(subBricks[k]!, tank))
             {
-                subBricks[k].getGlobalBounds().Intersects(tank.getGlobalBounds(), out FloatRect intersection);
+                subBricks[k]!.getGlobalBounds().Intersects(tank.getGlobalBounds(), out FloatRect intersection);
                 return intersection;
             }
         }
@@ -71,17 +76,25 @@ public class Brick
 
 public class SubBrick : IHavingBounds
 {
-    private Sprite brickSprite;
+    private readonly Sprite brickSprite;
     
 
     public SubBrick(float x, float y, bool first)
     {
-        brickSprite = new Sprite(Constants.texture)
-        {
-            TextureRect = Constants.brickTextureRect
-            ,Scale = Constants.smallBrickScale,
-            Position = new Vector2f(x, y) 
-        };
+        if (first)
+            brickSprite = new Sprite(Constants.texture)
+            {
+                TextureRect = Constants.brickTextureRect
+                ,Scale = Constants.smallBrickScale,
+                Position = new Vector2f(x, y) 
+            };
+        else
+            brickSprite = new Sprite(Constants.texture)
+            {
+                TextureRect = Constants.brickTextureRect2
+                ,Scale = Constants.smallBrickScale,
+                Position = new Vector2f(x, y) 
+            };
     }
     
     public void Display(RenderWindow window)

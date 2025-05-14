@@ -1,31 +1,29 @@
 ﻿using SFML.Graphics;
-using SFML.System;
 using SFML.Window;
 
 namespace MyGame;
 
-static class TankGame
+public static class TankGame
 {
     private static RenderWindow window = null!;
     private static Map map = null!;
 
-    static void Main()
+    public static void Main()
     {
         window = new RenderWindow(new VideoMode(Constants.windowWidth, Constants.windowHeight), "Battle City for ՀԾ");
         window.SetFramerateLimit(Constants.frameRate);
         window.Closed += (_, _) => window.Close();
-
         LoadTextures();
         GameLoop();
         Task.Delay(0).Wait();
     }
 
-    static void LoadTextures()
+    private static void LoadTextures()
     {
         map = new Map();
     }
 
-    static void GameLoop()
+    private static void GameLoop()
     {
         try
         {
@@ -40,7 +38,7 @@ static class TankGame
             }
         } catch (Exception ex) when (ex is GameOverException or WinException)
         {
-            
+            window.Close();
         }
     }
     

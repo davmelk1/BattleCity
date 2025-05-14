@@ -2,7 +2,7 @@ using SFML.Graphics;
 
 namespace MyGame;
 
-public class Utilities
+public abstract class Utilities
 {
     public static FloatRect? interacts(Border border, IHavingBounds obj)
     {
@@ -16,15 +16,14 @@ public class Utilities
     public static void handleCrushes(int index, Enemy?[] enemies)
     {
         if (enemies[index] == null) return;
-        for (int i = 0; i < Map.currentEnemyCount; i++)
+        for (int i = 0; i < enemies.Length; i++)
         {
             if (enemies[i] == null) continue;
-            if (enemies[index].getGlobalBounds().Intersects(enemies[i].getGlobalBounds()) && i != index)
-            {
-                enemies[i].randomChangeDirection();
-                enemies[index].randomChangeDirection();
-                enemies[index].myClamp(enemies[i].getGlobalBounds());
-            }
+            if (!enemies[index]!.getGlobalBounds().Intersects(enemies[i]!.getGlobalBounds()) || i == index) 
+                continue;
+            enemies[i]!.randomChangeDirection();
+            enemies[index]!.randomChangeDirection();
+            enemies[index]!.myClamp(enemies[i]!.getGlobalBounds());
         }
     }
 
@@ -39,17 +38,13 @@ public class Utilities
     {
         if (tank == null || bricks == null)
             return;
-        for (int i = 0; i < bricks.Length; i++)
+        foreach (var brick in bricks)
         {
-            if (bricks[i] != null)
-            {
-                FloatRect interaction;
-                interaction = bricks[i].getInteractions(tank);
-                if (interaction.Width == 0) continue;
-                tank.myClamp(interaction);
-                if (tank is Enemy)
-                    ((Enemy)tank).randomChangeDirection();
-            }
-        }   
-}
+            var interaction = brick.getInteractions(tank);
+            if (interaction.Width == 0) continue;
+            tank.myClamp(interaction);
+            if (tank is Enemy enemy)
+                enemy.randomChangeDirection();
+        }
+    }
 }
