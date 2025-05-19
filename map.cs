@@ -89,7 +89,7 @@ public class Map
             window.Draw(enemiesLeft[i]);
         window.Draw(playerLivesIcon);
         
-        var text = new Text(playerLives.ToString(), new Font("/home/davit/C#/kursach/MyGame/fonts/Arial.ttf"), 40);
+        var text = new Text(playerLives.ToString(), new Font(Constants.font), 40);
         text.FillColor = Color.Black;
         text.Position = new Vector2f(Constants.playerLivesIconPosition.X + 15, 
             Constants.playerLivesIconPosition.Y + Constants.playerLivesIconSize);

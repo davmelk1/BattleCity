@@ -36,10 +36,12 @@ public static class Constants
     private const int originalEnemyLeftHeight = 9;
     private const int originalPlayerLivesSize = 19;
     private const int originalSmallBrickSize = 4;
-    public const String heroImage = "/home/davit/C#/kursach/MyGame/imgs/all.png";
-    public const String enemyImage = "/home/davit/C#/kursach/MyGame/imgs/all.png";
-    public const String backgroundImage = "/home/davit/C#/kursach/MyGame/imgs/black.png";
-    public const String levelsPath = "/home/davit/C#/kursach/MyGame/levels/";
+
+    private static readonly string basePath = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+    public static readonly string texturesImage = Path.Combine(basePath, "imgs", "all.png");
+    public static readonly string backgroundImage = Path.Combine(basePath, "imgs", "black.png");
+    public static readonly string levelsPath = Path.Combine(basePath, "levels/");
+    public static readonly string font = Path.Combine(basePath, "fonts", "Arial.ttf");
     
     public static Dictionary<int, int> levelToEnemyCount =  new(){
         {1, 1},
@@ -48,7 +50,7 @@ public static class Constants
         {4, 3},
     };
 
-    public static Texture texture = new(heroImage);
+    public static Texture texture = new(texturesImage);
     public static uint maxBulletCount = 10;
     public const int tankSpeed = 10;
     public const float bulletSpeed = 12.5f;
