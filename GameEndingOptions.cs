@@ -48,7 +48,7 @@ public class Win
 
     public Win()
     {
-        win = new Text("WIN", new Font(Constants.font), 90);
+        win = new Text("WIN", Constants.font, 90);
         win.FillColor = Color.Green;
         
         win.Position = new Vector2f((Constants.gameX2 + Constants.gameX1) / 2 - win.GetGlobalBounds().Width / 2, 

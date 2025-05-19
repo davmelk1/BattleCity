@@ -41,7 +41,8 @@ public static class Constants
     public static readonly string texturesImage = Path.Combine(basePath, "imgs", "all.png");
     public static readonly string backgroundImage = Path.Combine(basePath, "imgs", "black.png");
     public static readonly string levelsPath = Path.Combine(basePath, "levels/");
-    public static readonly string font = Path.Combine(basePath, "fonts", "Arial.ttf");
+    private static readonly string fontFile = Path.Combine(basePath, "fonts", "Arial.ttf");
+    public static readonly Font font = new(fontFile);
     
     public static Dictionary<int, int> levelToEnemyCount =  new(){
         {1, 1},
