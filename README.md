@@ -44,6 +44,7 @@ sudo apt install curl
 curl -L https://aka.ms/install-dotnet-preview -o install-dotnet-preview.sh
 sudo bash install-dotnet-preview.sh
 sudo apt install libcsfml-dev   #5, 24, 88
+cd -
 ```
 
 Run the application
